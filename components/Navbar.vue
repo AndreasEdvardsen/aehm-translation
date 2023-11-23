@@ -33,10 +33,12 @@ import type { AuthModel } from "pocketbase";
 
 const pb = new PocketBase("https://pocketbase.aehm.cloud");
 const user = useState<AuthModel>("user");
-if (pb.authStore.model && process.client) {
-  user.value = pb.authStore.model;
-}
-console.log(user);
+
+onMounted(async () => {
+  if (pb.authStore.model && process.client) {
+    user.value = pb.authStore.model;
+  }
+});
 
 function signOut() {
   pb.authStore.clear();
