@@ -1,21 +1,32 @@
-FROM oven/bun:latest
+# Step 1: Use the oven/bun:latest Docker image for building the project
+FROM oven/bun:latest as builder
 
-# install simple http server for serving static content
-RUN bun install -g http-server
-
-# make the 'app' folder the current working directory
+# Set the working directory in the container
 WORKDIR /app
 
-# copy both 'package.json' and 'package-lock.json' (if available)
-COPY package*.json ./
+# Copy the package.json and bun.lockb files
+COPY package.json bun.lockb* ./
 
-# install project dependencies
+# Install dependencies
 RUN bun install
 
-# copy project files and folders to the current working directory (i.e. 'app' folder)
+# Copy the rest of your project
 COPY . .
-# build app for production with minification
+
+# Build the project (if necessary)
 RUN bun run build
 
-EXPOSE 8080
-ENTRYPOINT [ "bun", "run", ".output/server/index.mjs" ]
+# Step 2: Use the oven/bun:latest Docker image for the runtime environment
+FROM oven/bun:latest
+
+WORKDIR /app
+
+# Copy the build from the previous stage
+COPY --from=builder /app/.output ./.output
+COPY --from=builder /app/node_modules ./node_modules
+
+# Expose the port the app runs on
+EXPOSE 3000
+
+# Start the app with the compiled .mjs file
+CMD ["bun", "./.output/server/index.mjs"]
