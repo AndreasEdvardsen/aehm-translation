@@ -1,5 +1,5 @@
 # Step 1: Use the oven/bun:latest Docker image for building the project
-FROM oven/bun:latest as builder
+FROM oven/bun:alpine as builder
 
 # Set the working directory in the container
 WORKDIR /app
@@ -17,7 +17,7 @@ COPY . .
 RUN bun run build
 
 # Step 2: Use the oven/bun:latest Docker image for the runtime environment
-FROM oven/bun:latest
+FROM oven/bun:alpine
 
 WORKDIR /app
 
