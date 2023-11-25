@@ -15,7 +15,11 @@
     v-for="(assignee, index) in entry.assignees"
     class="textfield-with-button"
   >
-    <TextField v-model="assignee.name" />
+    <UserSearchField
+      v-model="entry.assignees[index]"
+      :label="'Assignee'"
+      :users="users"
+    ></UserSearchField>
     <CustomButton :label="'-'" @click="removeAssignee(index)" />
   </div>
   <div class="button-group">
@@ -25,6 +29,8 @@
 
 <script setup lang="ts">
 import type { Entry } from "~/utils/globals";
+
+const { data: users } = await useFetch("/api/users");
 
 const props = defineProps({
   entry: {
@@ -57,7 +63,7 @@ function removeAssignee(index: number) {
 .textfield-with-button {
   display: grid;
   grid-template-columns: 1fr auto;
-  grid-gap: $spacing / 2;
+  grid-gap: 0.5rem;
 }
 
 .button-group {

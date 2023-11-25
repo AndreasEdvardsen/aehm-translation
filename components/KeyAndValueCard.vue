@@ -95,7 +95,7 @@ async function save() {
 .textfield-with-button {
   display: grid;
   grid-template-columns: 1fr auto;
-  grid-gap: $spacing / 2;
+  grid-gap: 0.5rem;
 }
 
 .button-group-right {

@@ -1,4 +1,5 @@
 import PocketBase from "pocketbase";
+import { UsersResponse } from "~/pocketbase-types";
 
 const pb = new PocketBase("https://pocketbase.aehm.cloud");
 export default defineEventHandler(async (event) => {
@@ -10,8 +11,12 @@ export default defineEventHandler(async (event) => {
   const data = {
     key: body.key,
     texts: body.texts,
-    assignees: body.assignees || [],
+    assignees:
+      body.assignees.map((user: UsersResponse) => {
+        return user.id;
+      }) || [],
   };
+  console.log(data);
   return pb
     .collection("keys_and_values")
     .update(body.id, data)

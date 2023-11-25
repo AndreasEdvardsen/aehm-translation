@@ -30,7 +30,7 @@ defineProps({
 @import "../assets/variables.scss";
 
 Button {
-  background-color: $background-color;
+  background-color: transparent;
   color: $primary-color;
   //prevent text wrap
   white-space: nowrap;

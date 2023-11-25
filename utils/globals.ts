@@ -1,14 +1,3 @@
-import { RecordModel } from "pocketbase";
-import { RecordModel } from "pocketbase/dist/models/RecordModel";
-import { RecordAuthResponse } from "pocketbase/dist/models/RecordAuthResponse";
-
-type User = {
-  id: string;
-  email: string;
-  username: string;
-  name: string;
-};
-
 enum Corner {
   TopLeft = "top-left",
   TopRight = "top-right",
@@ -33,4 +22,4 @@ type Entry = {
 };
 
 export { Corner };
-export type { Entry, texts, assignee, User };
+export type { Entry, texts, assignee };

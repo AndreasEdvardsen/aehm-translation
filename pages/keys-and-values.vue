@@ -8,12 +8,17 @@
         @click="navigateTo(`/keys-and-values/new`)"
       />
     </div>
-    <KeysAndValuesTable :search-string="search" />
+    <EntryTable :entries="entries" :search-string="search" />
   </div>
   <NuxtPage />
 </template>
 <script setup lang="ts">
+import type { Entry } from "~/utils/globals";
+
 const search = ref("");
+const { data } = await useFetch<Entry>("/api/keysAndValues");
+
+const entries = useState("keysAndValues", () => data);
 
 const route = useRoute();
 </script>
