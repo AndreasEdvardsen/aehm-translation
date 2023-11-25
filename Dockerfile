@@ -15,7 +15,7 @@ RUN bun install
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
 # build app for production with minification
-RUN npm bun build
+RUN bun run build
 
 EXPOSE 8080
-CMD [ "http-server", "dist" ]
+ENTRYPOINT [ "bun", "run", ".output/server/index.mjs" ]
