@@ -1,22 +1,21 @@
 <template>
-  <Card v-if="!user">
-    <h1>Making Translations Easy!</h1>
-    <p>
-      This is a tool to help you manage translations for your app. You can
-      create keys and values, assign them to users, and track their progress.
-    </p>
-  </Card>
-  <Card v-if="!user">
-    <h1>Features</h1>
-    <ul class="feature-list">
-      <li>Easy to use</li>
-      <li>Easy to manage</li>
-      <li>Easy to track</li>
-    </ul>
-  </Card>
   <div v-if="user">
-    <h1>Entries Assigned To You</h1>
+    <h1>{{ entries.length }} Entries Assigned To You</h1>
     <EntryTable :entries="entries" />
+  </div>
+  <div v-if="user">
+    <h1>Profile</h1>
+    <Card>
+      <div class="profile">
+        <div class="profile__avatar">
+          <Avatar :user="user" />
+        </div>
+        <div class="profile__info">
+          <h2>{{ user.name }}</h2>
+          <p>{{ user.email }}</p>
+        </div>
+      </div>
+    </Card>
   </div>
 </template>
 
@@ -24,9 +23,10 @@
 import type { AuthModel } from "pocketbase";
 import type { Entry } from "~/utils/globals";
 import type { Ref } from "vue";
+import type { UsersResponse } from "~/pocketbase-types";
 
 let entries: Ref<Entry[]> = ref([]);
-const user = useState<AuthModel>("user");
+const user = useState<UsersResponse>("user");
 if (user.value) {
   entries.value = await getEntriesAssignedToUser(user.value.id);
 }
@@ -63,6 +63,23 @@ async function getEntriesAssignedToUser(id: string) {
 
   .searchbar {
     width: 100%;
+  }
+}
+
+.profile {
+  display: flex;
+  gap: 1rem;
+
+  &__avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
   }
 }
 </style>
